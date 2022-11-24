@@ -1,5 +1,3 @@
-import styled from "@emotion/styled";
-import { Button } from "antd";
 import { BreadHeader } from "../sci_info";
 import { SciPublishTable } from "./table";
 

@@ -17,6 +17,8 @@ import {
 import { UserScreen } from "@/pages/user";
 import { PaperUpload, PatentUpload, SoftUpload } from "@/pages/sci_updoad";
 import { SciPublish } from "@/pages/sci_ad_publish";
+import { AdminTeac } from "@/pages/admin_teac";
+import { AdminSci } from "@/pages/admin_sci";
 export type RouterAuth = RouteObject & {
   name: string;
   icon?: React.ReactNode;
@@ -104,14 +106,14 @@ const admin = [
     path: "/",
     name: "教师信息管理",
     index: true,
-    component: <SciInfo />,
+    component: <AdminTeac />,
     auth: 3,
     icon: <DesktopOutlined />,
   },
   {
     path: "/scimanager",
     name: "科研管理员信息管理",
-    component: <SciApply />,
+    component: <AdminSci />,
     auth: 3,
     icon: <FileOutlined />,
   },
