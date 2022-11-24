@@ -25,4 +25,3 @@ export const RedirectTo = ({ to, replace, ...rest }: NavigateProps) => {
   return <Navigate to={to} replace={replace} />;
 };
 
-export default RedirectTo;

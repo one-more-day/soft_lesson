@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "json-server": "json-server __json_server_mock__/db.json --watch --port 3000 --middlewares ./__json_server_mock__/middleware.js"
+    "json-server": "json-server __json_server_mock__/db.json --watch --port 9000 --middlewares ./__json_server_mock__/middleware.js"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",

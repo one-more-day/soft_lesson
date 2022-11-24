@@ -4,13 +4,21 @@ import logo from "@/assets/logo.svg";
 import avatar from "@/assets/avatar.jpg";
 import { Avatar, Button, Dropdown, MenuProps } from "antd";
 import { useAuth } from "@/contexts/auth";
+import { useNavigate } from "react-router-dom";
 export const PageHeader = () => {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const items: MenuProps["items"] = [
     {
       key: "logout",
       label: (
-        <Button type="link" onClick={logout}>
+        <Button
+          type="link"
+          onClick={() => {
+            logout();
+            navigate("login");
+          }}
+        >
           登出
         </Button>
       ),
@@ -27,8 +35,12 @@ export const PageHeader = () => {
       <HeaderRight>
         <Dropdown menu={{ items }}>
           <AvatarCon>
-            <Avatar size={"default"} icon={<Logo src={avatar} />} />
-            <span>Admin</span>
+            <Avatar
+              style={{ margin: "1rem" }}
+              size={"default"}
+              icon={<img src={avatar} />}
+            />
+            <span>{user?.name}</span>
           </AvatarCon>
         </Dropdown>
       </HeaderRight>
@@ -55,7 +67,7 @@ const HeaderLeft = styled(Row)``;
 const HeaderRight = styled.div``;
 const AvatarCon = styled.div`
   height: 6rem;
-  width: 9rem;
+  /* width: 10rem; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;

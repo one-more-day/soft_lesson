@@ -1,25 +1,9 @@
-import { getCheckToken } from "@/services/login";
 import { User } from "@/pages/login/login.type";
 import React, { ReactNode, useContext, useState } from "react";
-import cookie from "react-cookies";
 import { useAsync } from "@/utils/useAsync";
 import { useMount } from "@/utils";
 import * as auth from "@/services/auth-provider";
-const setToken = (msg: string) => {
-  cookie.save("user", msg + "", { path: "/" });
-};
-const removeToken = () => {
-  cookie.remove("user");
-};
-const getToken = () => {
-  if (cookie.load("user")) return true;
-  return false;
-};
-const checkToken = async (): Promise<number> => {
-  const { code, msg } = await getCheckToken();
-  if (code === 200) return new Promise((resolve) => resolve(1));
-  else return new Promise((resolve) => resolve(0));
-};
+import { http } from "@/utils/http";
 interface AuthForm {
   username: string;
   password: string;
@@ -35,18 +19,9 @@ const bootstrapUser = async () => {
   let user = null;
   const token = auth.getToken();
   if (token) {
-    //TODO 接口
-    const data = {
-      user: {
-        name: "jack",
-        id: "1",
-        token: "123",
-        tele: "11222122122",
-        password: "jack",
-        auth: 1,
-      },
-    };
-    user = data.user;
+    const data = await http(`users`, { data: { token } });
+    console.log("mydata", token, data[0]);
+    user = data[0];
   }
   return user;
 };

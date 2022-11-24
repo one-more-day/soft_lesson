@@ -1,9 +1,20 @@
-import { Avatar, Button, Card, Divider, Layout } from "antd";
+import { Avatar, Button, Card, Divider, Form, Layout } from "antd";
 import avatar from "@/assets/avatar.jpg";
 import { useAuth } from "@/contexts/auth";
 import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
+import { UserEditModal } from "@/components/modal/userEditModal";
+import TextArea from "antd/lib/input/TextArea";
+import { useHttp } from "@/utils/http";
+import { User } from "../login/login.type";
 export const UserScreen = () => {
-  const { user } = useAuth();
+  const http = useHttp();
+  const [user, setUser] = useState<User | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user: authUser } = useAuth();
+  useEffect(() => {
+    setUser(authUser);
+  });
   return (
     <Card
       style={{
@@ -19,16 +30,11 @@ export const UserScreen = () => {
         </AvatarCon>
         <Container>
           <IntroCon>
-            <span style={{ display: "inline-block", marginRight: "20px" }}>
-              姓名:
-            </span>
+            <IntroSpan>姓名:</IntroSpan>
             <span>{user?.name}</span>
           </IntroCon>
-
           <IntroCon>
-            <span style={{ display: "inline-block", marginRight: "20px" }}>
-              职业:
-            </span>
+            <IntroSpan>职业:</IntroSpan>
             <span>
               {user?.auth === 1
                 ? "教师"
@@ -38,20 +44,36 @@ export const UserScreen = () => {
             </span>
           </IntroCon>
           <IntroCon>
-            <span style={{ display: "inline-block", marginRight: "20px" }}>
-              学校:
-            </span>
-            <span>河北工业大学</span>
+            <IntroSpan>学校:</IntroSpan>
+            <span>{user?.school}</span>
           </IntroCon>
           <IntroCon>
-            <span style={{ display: "inline-block", marginRight: "20px" }}>
-              联系电话:
-            </span>
+            <IntroSpan>学院:</IntroSpan>
+            <span>{user?.academy}</span>
+          </IntroCon>
+          <IntroCon>
+            <IntroSpan>邮箱:</IntroSpan>
+            <span>{user?.email}</span>
+          </IntroCon>
+          <IntroCon>
+            <IntroSpan>联系电话:</IntroSpan>
             <span>{user?.tele}</span>
           </IntroCon>
         </Container>
         <Divider />
-        <Button type="primary">编辑资料</Button>
+        <Form.Item style={{ width: "50rem" }} label="个人简介">
+          <TextArea rows={2} placeholder={"简单记录自己"} value={user?.intro} />
+        </Form.Item>
+        <Divider />
+        <Button type="primary" onClick={() => setIsModalOpen(true)}>
+          编辑资料
+        </Button>
+        <UserEditModal
+          setUser={(user) => setUser(user)}
+          user={user}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
       </CardCon>
     </Card>
   );
@@ -65,6 +87,7 @@ const CardCon = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  padding-left: 10rem;
 `;
 const AvatarCon = styled.div`
   width: 40rem;
@@ -72,5 +95,8 @@ const AvatarCon = styled.div`
   margin-bottom: 3rem;
 `;
 const IntroCon = styled.div`
-  width: 20rem;
+  width: 25rem;
+`;
+const IntroSpan = styled.span`
+  margin-right: 3rem;
 `;

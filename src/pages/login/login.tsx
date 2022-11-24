@@ -56,7 +56,6 @@ export const LoginSreen = () => {
       </Form.Item>
       <Form.Item name={"identity"} label="身份">
         <Select
-          defaultValue=""
           style={{ width: " 100% " }}
           options={[
             { label: "请选择", value: "" },
