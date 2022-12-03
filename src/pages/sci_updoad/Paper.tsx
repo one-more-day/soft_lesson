@@ -6,7 +6,10 @@ import { useState } from "react";
 import { CardCon } from ".";
 
 export const Paper = () => {
-  const [imageUrl, setImageUrl] = useState("");
+  const onFinish = (values:{}) => {
+
+  }
+  const [FileUrl, setFileUrl] = useState("");
   return (
     <CardCon>
       <Card style={{ width: "90rem" }}>
@@ -14,6 +17,7 @@ export const Paper = () => {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 10 }}
           layout="horizontal"
+          
         >
           <Form.Item label="姓名">
             <Input />
@@ -28,7 +32,7 @@ export const Paper = () => {
             <TextArea rows={2} placeholder={"简介"} />
           </Form.Item>
           <Form.Item label="附件上传">
-            <TUploadFile imageUrl={imageUrl} setImageUrl={setImageUrl} />
+            <TUploadFile FileUrl={FileUrl} setFileUrl={setFileUrl} />
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

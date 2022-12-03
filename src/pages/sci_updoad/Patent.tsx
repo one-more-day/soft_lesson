@@ -6,7 +6,7 @@ import { useState } from "react";
 import { CardCon } from ".";
 
 export const Patent = () => {
-  const [imageUrl, setImageUrl] = useState("");
+  const [FileUrl, setFileUrl] = useState("");
   return (
     <CardCon>
       <Card style={{ width: "90rem" }}>
@@ -28,7 +28,7 @@ export const Patent = () => {
             <TextArea rows={2} placeholder={"简介"} />
           </Form.Item>
           <Form.Item label="附件上传">
-          <TUploadFile imageUrl={imageUrl} setImageUrl={setImageUrl} />
+          <TUploadFile FileUrl={FileUrl} setFileUrl={setFileUrl} />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">

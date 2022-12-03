@@ -44,7 +44,7 @@ export const ProjectApplyModal = (props: Iprops) => {
             <span>{project?.name}</span>
           </Form.Item>
           <Form.Item name="file" label="文件上传">
-            <TUploadFile imageUrl={fileUrl} setImageUrl={setFileUrl}/>
+            <TUploadFile FileUrl={fileUrl} setFileUrl={setFileUrl}/>
           </Form.Item>
           <Divider />
           <ModalButton>

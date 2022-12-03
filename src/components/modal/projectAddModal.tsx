@@ -12,13 +12,13 @@ interface Iprops {
 export const ProjectAddModal = (props: Iprops) => {
   const http = useHttp();
   const { setIsModalOpen, isModalOpen, retry } = props;
-  const [imageUrl, setImageUrl] = useState("");
+  const [FileUrl, setFileUrl] = useState("");
   const onFinish = async (values: ProjectType) => {
     setIsModalOpen(false);
-    console.log(values, imageUrl);
+    console.log(values, FileUrl);
     http(`projects`, {
       method: "POST",
-      data: { ...values, attachment: imageUrl, process: 0 },
+      data: { ...values, attachment: FileUrl, process: 0 },
     }).then(() => retry());
     message.success("添加成功");
   };
@@ -56,7 +56,7 @@ export const ProjectAddModal = (props: Iprops) => {
             name="attachment"
             label="附件上传"
           >
-            <TUploadFile imageUrl={imageUrl} setImageUrl={setImageUrl} />
+            <TUploadFile FileUrl={FileUrl} setFileUrl={setFileUrl} />
           </Form.Item>
           <Divider />
           <Form.Item>

@@ -76,14 +76,38 @@
       "id": 5,
       "key": 5,
       "process": 0
+    }
+  ],
+  "teacaward": [
+    {
+      "id": 1,
+      "tno": 1,
+      "name": "专利1",
+      "type": 1
     },
     {
-      "name": "test1",
-      "intro": "ad",
-      "endtime": "2022-12-30",
-      "attachment": "",
-      "process": 0,
-      "id": 6
+      "id": 2,
+      "tno": 1,
+      "name": "专利2",
+      "type": 1
+    },
+    {
+      "id": 3,
+      "tno": 1,
+      "name": "软著1",
+      "type": 2
+    },
+    {
+      "id": 4,
+      "tno": 1,
+      "name": "软著2",
+      "type": 2
+    },
+    {
+      "id": 5,
+      "tno": 1,
+      "name": "论文1",
+      "type": 3
     }
   ]
 }

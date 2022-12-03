@@ -1,13 +1,23 @@
 import { ProjectType } from "@/pages/sci_info/table";
-import { Button, Modal, Steps } from "antd";
+import { Button, Modal, Steps,Divider } from "antd";
+import { BaseList } from "../list";
 interface Iprops {
   isModalOpen: boolean;
   setIsModalOpen: (p: boolean) => void;
   project: ProjectType | null;
   setProject: (project: ProjectType) => void;
 }
+
 export const ApplyProcessModal = (props: Iprops) => {
   const { project, setIsModalOpen, isModalOpen, setProject } = props;
+  const generator = (project: ProjectType) => {
+    const arr = [];
+    arr.push({ title: "项目名称", name: project.name });
+    arr.push({ title: "项目申请人", name: project.name });
+    arr.push({ title: "项目附件", name: project.name });
+    arr.push({ title: "项目审核评价", name: project.intro });    
+    return arr;
+  };
   return (
     <>
       <Modal
@@ -18,6 +28,8 @@ export const ApplyProcessModal = (props: Iprops) => {
         footer={null}
       >
         <ApplyStep process={project?.process} />
+        <Divider />
+        <BaseList props={project ? generator(project) : []} />
       </Modal>
     </>
   );

@@ -6,7 +6,7 @@ import { Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { ProjectType } from "../sci_info/table";
-export const SciApplyTable = () => {
+export const SciExamTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState<ProjectType | null>(null);
   const http = useHttp();

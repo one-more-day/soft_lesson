@@ -11,7 +11,7 @@ import { useState } from "react";
 export interface ProjectType {
   id: string;
   name: string;
-  intro: number;
+  intro: string;
   endtime: string;
   process: number;
   attachment: string;

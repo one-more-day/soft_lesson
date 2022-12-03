@@ -19,6 +19,7 @@ import { PaperUpload, PatentUpload, SoftUpload } from "@/pages/sci_updoad";
 import { SciPublish } from "@/pages/sci_ad_publish";
 import { AdminTeac } from "@/pages/admin_teac";
 import { AdminSci } from "@/pages/admin_sci";
+import { SciExam } from "@/pages/sci_ad_exam";
 export type RouterAuth = RouteObject & {
   name: string;
   icon?: React.ReactNode;
@@ -87,9 +88,9 @@ const sciManager = [
     icon: <DesktopOutlined />,
   },
   {
-    path: "/sciapply",
+    path: "/sciexam",
     name: "项目审批",
-    component: <SciApply />,
+    component: <SciExam />,
     auth: 2,
     icon: <FileOutlined />,
   },
