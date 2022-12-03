@@ -1,8 +1,7 @@
-import { useMount } from "@/utils";
 import { CheckSquareOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, message, Upload } from "antd";
 import type { RcFile } from "antd/es/upload/interface";
-import { useState } from "react";
+
 export const TUploadFile = ({
   FileUrl,
   setFileUrl,
