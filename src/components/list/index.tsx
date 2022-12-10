@@ -1,9 +1,14 @@
 import { Button, List } from "antd";
+import { ReactElement } from "react";
 
-export const BaseList = <T extends { title?: string; name: string }>({
+export const BaseList = <T,>({
   props,
+  title,
+  name,
 }: {
   props: T[];
+  title: string;
+  name: string;
 }) => {
   return (
     <>
@@ -13,12 +18,8 @@ export const BaseList = <T extends { title?: string; name: string }>({
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
-              title={
-                <a type="link">
-                  {item.title ? item.title : item.name}
-                </a>
-              }
-              description={item.name}
+              title={item[title as keyof T] as string}
+              description={item[name as keyof T] as string}
             />
           </List.Item>
         )}

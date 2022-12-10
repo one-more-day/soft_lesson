@@ -1,21 +1,28 @@
-import { ProjectType } from "@/pages/sci_info/table";
-import { Button, Modal, Steps,Divider } from "antd";
+import { useAuth } from "@/contexts/auth";
+import { ApplyProjectType } from "@/types";
+import { Button, Modal, Steps, Divider } from "antd";
 import { BaseList } from "../list";
 interface Iprops {
   isModalOpen: boolean;
   setIsModalOpen: (p: boolean) => void;
-  project: ProjectType | null;
-  setProject: (project: ProjectType) => void;
+  project: ApplyProjectType | null;
+  setProject: (project: ApplyProjectType) => void;
 }
 
 export const ApplyProcessModal = (props: Iprops) => {
   const { project, setIsModalOpen, isModalOpen, setProject } = props;
-  const generator = (project: ProjectType) => {
+  const { user } = useAuth();
+  console.log(project);
+
+  const generator = (project: ApplyProjectType) => {
     const arr = [];
-    arr.push({ title: "项目名称", name: project.name });
-    arr.push({ title: "项目申请人", name: project.name });
-    arr.push({ title: "项目附件", name: project.name });
-    arr.push({ title: "项目审核评价", name: project.intro });    
+    arr.push({ title: "项目名称", name: project.sciInfo.projectname });
+    arr.push({ title: "项目申请人", name: user?.name || "jack" });
+    arr.push({
+      title: "项目附件",
+      name: <a href={project.sciInfo.attach}>{project.sciInfo.attach}</a>,
+    });
+    arr.push({ title: "项目审核评价", name: project.intro });
     return arr;
   };
   return (
@@ -27,15 +34,21 @@ export const ApplyProcessModal = (props: Iprops) => {
         width={800}
         footer={null}
       >
-        <ApplyStep process={project?.process} />
+        <ApplyStep process={project?.checkStat} />
         <Divider />
-        <BaseList props={project ? generator(project) : []} />
+        <BaseList
+          props={project ? generator(project) : []}
+          title={"title"}
+          name={"name"}
+        />
       </Modal>
     </>
   );
 };
 
 const ApplyStep = (props: { process?: number }) => {
+  console.log(props);
+
   return (
     <>
       <Steps

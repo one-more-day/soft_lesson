@@ -1,49 +1,63 @@
-import { ApplyProcessModal } from "@/components/modal/applyProcessModal";
+import { ExamProcessModal } from "@/components/modal/examProcessModal";
+import { LoginUrl } from "@/global";
+import { ApplyProjectType, ProjectType } from "@/types";
 import { useMount } from "@/utils";
 import { useHttp } from "@/utils/http";
 import { useAsync } from "@/utils/useAsync";
 import { Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
-import { ProjectType } from "../sci_info/table";
+import { User } from "../login/login.type";
 export const SciExamTable = () => {
+  const [applyUser, setApplyUser] = useState<User>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalInfo, setModalInfo] = useState<ProjectType | null>(null);
+  const [modalInfo, setModalInfo] = useState<ApplyProjectType | null>(null);
   const http = useHttp();
-  const columns: ColumnsType<ProjectType> = [
+  const getTeacher = async () => {
+    const user = await (await fetch(`${LoginUrl}/users?token=teacher`)).json();
+    setApplyUser(user[0]);
+  };
+  const columns: ColumnsType<ApplyProjectType> = [
     {
       title: "项目名称",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "projectname",
+      key: "projectname",
       render: (text) => <a>{text}</a>,
       width: 100,
     },
     {
       title: "项目简介",
-      dataIndex: "intro",
-      key: "intro",
+      dataIndex: "id",
+      key: "id",
       width: 200,
     },
     {
       title: "截至时间",
-      dataIndex: "endtime",
+      dataIndex: "deadline",
       width: 200,
     },
     {
       title: "进度",
-      dataIndex: "process",
-      render: (_, { process }) => (
+      render: (_, { checkStat }) => (
         <>
           {
             <Tag
               color={
-                process === 0 ? "geekblue" : process === 1 ? "blue" : "green"
+                checkStat === 0
+                  ? "geekblue"
+                  : checkStat === 1
+                  ? "blue"
+                  : checkStat === 2
+                  ? "red"
+                  : "green"
               }
             >
-              {process === 0
+              {checkStat === 0
                 ? "未申请"
-                : process === 1
+                : checkStat === 1
                 ? "正在审核"
+                : checkStat === 2
+                ? "审核失败"
                 : "审核成功"}
             </Tag>
           }
@@ -51,13 +65,29 @@ export const SciExamTable = () => {
       ),
       width: 200,
     },
+    {
+      title: "申请人",
+      render: (_, { tno }) => {
+        return applyUser ? applyUser.name : "jack";
+      },
+      width: 200,
+    },
   ];
 
-  const { data: applyList, run, isLoading } = useAsync<ProjectType[]>();
+  const {
+    data: applyList,
+    run,
+    isLoading,
+    retry,
+  } = useAsync<ApplyProjectType[]>();
   useMount(() => {
-    run(http("projects"));
+    run(http("demo/projectApply/getProjectApplyByTno", { data: { tno: 1 } }), {
+      retry: () =>
+        http("demo/projectApply/getProjectApplyByTno", { data: { tno: 1 } }),
+    });
+    getTeacher();
   });
-  const click = (e: any, info: ProjectType) => {
+  const click = (e: any, info: ApplyProjectType) => {
     setIsModalOpen(true);
     setModalInfo(info);
   };
@@ -66,9 +96,11 @@ export const SciExamTable = () => {
       <Table
         columns={columns}
         dataSource={
-          applyList
-            ?.map((item) => ({ ...item, key: item.id }))
-            .filter((item) => item.process !== 0) || []
+          applyList?.map((item) => ({
+            ...item,
+            key: item.sciNo,
+            ...item.sciInfo,
+          })) || []
         }
         loading={isLoading}
         onRow={(record) => {
@@ -77,11 +109,13 @@ export const SciExamTable = () => {
           };
         }}
       />
-      <ApplyProcessModal
+      <ExamProcessModal
+        applyUser={applyUser}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         project={modalInfo}
         setProject={(project) => setModalInfo(project)}
+        retry={() => retry()}
       />
     </>
   );

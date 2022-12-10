@@ -1,8 +1,11 @@
-import { ProjectType } from "@/pages/sci_info/table";
-import { useHttp } from "@/utils/http";
-import styled from "@emotion/styled";
+import { useAuth } from "@/contexts/auth";
+import { ProjectType } from "@/types";
+import { getNowTime } from "@/utils";
+import { fileHttp, useHttp } from "@/utils/http";
 import { Button, Divider, Form, Input, message, Modal, Select } from "antd";
+import { RcFile } from "antd/es/upload/interface";
 import { useState } from "react";
+import { ModalButton } from "../lib";
 import { TUploadFile } from "../upload/TUploadFile";
 interface Iprops {
   isModalOpen: boolean;
@@ -10,17 +13,32 @@ interface Iprops {
   retry: () => void;
 }
 export const ProjectAddModal = (props: Iprops) => {
-  const http = useHttp();
+  const { user } = useAuth();
   const { setIsModalOpen, isModalOpen, retry } = props;
   const [FileUrl, setFileUrl] = useState("");
+  const [fileList, setFileList] = useState<RcFile[]>([]);
+
   const onFinish = async (values: ProjectType) => {
-    setIsModalOpen(false);
+    if (fileList.length === 0) {
+      message.info("请上传附件");
+      return;
+    }
+    const fd = new FormData();
+    fd.append("procjectName", values.projectname);
+    fd.append("sciNo", values.sciNo.toString());
+    fd.append("deadLine", values.deadline);
+    fd.append("attach", fileList[0]);
+    fd.append("publishTime", getNowTime("HH-MM-DD"));
+    fd.append("publisher", user ? user.name : "");
+
     console.log(values, FileUrl);
-    http(`projects`, {
-      method: "POST",
-      data: { ...values, attachment: FileUrl, process: 0 },
-    }).then(() => retry());
-    message.success("添加成功");
+    fileHttp("demo/sciInfo/addSciInfo", {
+      body: fd,
+    }).then(() => {
+      message.success("添加成功");
+      retry();
+    });
+    setIsModalOpen(false);
   };
 
   return (
@@ -38,25 +56,29 @@ export const ProjectAddModal = (props: Iprops) => {
           layout="horizontal"
           onFinish={onFinish}
         >
-          <Form.Item rules={[{ required: true }]} name="name" label="项目名称">
+          <Form.Item
+            rules={[{ required: true }]}
+            name="projectname"
+            label="项目名称"
+          >
             <Input />
           </Form.Item>
-          <Form.Item rules={[{ required: true }]} name="intro" label="项目简介">
+          <Form.Item rules={[{ required: true }]} name="sciNo" label="项目编号">
             <Input />
           </Form.Item>
           <Form.Item
             rules={[{ required: true }]}
-            name="endtime"
+            name="deadline"
             label="截止时间"
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            rules={[{ required: false }]}
-            name="attachment"
-            label="附件上传"
-          >
-            <TUploadFile FileUrl={FileUrl} setFileUrl={setFileUrl} />
+          <Form.Item rules={[{ required: false }]} label="附件上传">
+            <TUploadFile
+              FileUrl={FileUrl}
+              setFileUrl={setFileUrl}
+              setFileList={setFileList}
+            />
           </Form.Item>
           <Divider />
           <Form.Item>
@@ -81,7 +103,3 @@ export const ProjectAddModal = (props: Iprops) => {
     </>
   );
 };
-const ModalButton = styled.div`
-  display: flex;
-  justify-content: center;
-`;

@@ -9,4 +9,6 @@ export interface User {
   academy: string;
   auth: number;
   intro?: string;
+  username?: string;
+  password?: string;
 }

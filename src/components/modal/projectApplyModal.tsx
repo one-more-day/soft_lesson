@@ -1,9 +1,11 @@
+import { useAuth } from "@/contexts/auth";
 import { User } from "@/pages/login/login.type";
-import { ProjectType } from "@/pages/sci_info/table";
-import { useHttp } from "@/utils/http";
-import styled from "@emotion/styled";
+import { ProjectType } from "@/types";
+import { fileHttp, useHttp } from "@/utils/http";
 import { Button, Divider, Form, Input, message, Modal, Select } from "antd";
+import { RcFile } from "antd/es/upload/interface";
 import { useState } from "react";
+import { ModalButton } from "../lib";
 import { TUploadFile } from "../upload/TUploadFile";
 interface Iprops {
   isModalOpen: boolean;
@@ -13,16 +15,26 @@ interface Iprops {
   retry: () => void;
 }
 export const ProjectApplyModal = (props: Iprops) => {
-  const http = useHttp();
-  const [fileUrl, setFileUrl] = useState("");
+  const { user } = useAuth();
+  const [fileList, setFileList] = useState<RcFile[]>([]);
   const { project, setIsModalOpen, isModalOpen, retry } = props;
-  const onFinish = async (values: User) => {
+  const onFinish = async () => {
+    if (fileList.length === 0) {
+      message.info("请上传附件");
+      return;
+    }
     setIsModalOpen(false);
-    http(`projects/${project?.id}`, {
-      method: "PUT",
-      data: { ...project, process: 1 },
-    }).then(() => retry());
-    message.success("申请成功");
+    const fd = new FormData();
+    fd.append("attach", fileList[0]);
+    fd.append("sciNo", project ? project.sciNo.toString() : "");
+    fd.append("tno", user ? user.id.toString() : "");
+    fileHttp(`demo/projectApply/teacApply`, {
+      body: fd,
+    }).then((res) => {
+      console.log(res);
+      retry();
+      message.success("申请成功");
+    });
   };
 
   return (
@@ -41,10 +53,13 @@ export const ProjectApplyModal = (props: Iprops) => {
           onFinish={onFinish}
         >
           <Form.Item name="name" label="项目名称">
-            <span>{project?.name}</span>
+            <span>{project?.projectname}</span>
+          </Form.Item>
+          <Form.Item name="people" label="项目申请人">
+            <span>{user?.name}</span>
           </Form.Item>
           <Form.Item name="file" label="文件上传">
-            <TUploadFile FileUrl={fileUrl} setFileUrl={setFileUrl}/>
+            <TUploadFile setFileList={setFileList} />
           </Form.Item>
           <Divider />
           <ModalButton>
@@ -57,7 +72,3 @@ export const ProjectApplyModal = (props: Iprops) => {
     </>
   );
 };
-const ModalButton = styled.div`
-  display: flex;
-  justify-content: center;
-`;

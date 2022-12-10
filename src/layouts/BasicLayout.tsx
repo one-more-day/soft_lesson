@@ -8,7 +8,6 @@ export const BasicLayout = () => {
     <div>
       <PageHeader />
       <Layout>
-        
         <MenuSider />
         <Layout>
           <Center>
@@ -20,6 +19,6 @@ export const BasicLayout = () => {
   );
 };
 const Center = styled.div`
-  height: calc(100vh - 6.4rem);
+  min-height: calc(100vh - 6.4rem);
   background-color: #f0f2f5;
 `;

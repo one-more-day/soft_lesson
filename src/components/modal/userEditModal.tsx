@@ -1,8 +1,10 @@
+import { LoginUrl } from "@/global";
 import { User } from "@/pages/login/login.type";
 import { useHttp } from "@/utils/http";
 import styled from "@emotion/styled";
 import { Button, Divider, Form, Input, message, Modal, Select } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import { ModalButton } from "../lib";
 interface Iprops {
   isModalOpen: boolean;
   setIsModalOpen: (p: boolean) => void;
@@ -10,14 +12,16 @@ interface Iprops {
   setUser: (user: User) => void;
 }
 export const UserEditModal = (props: Iprops) => {
-  const http = useHttp();
-  const { user, setIsModalOpen, isModalOpen } = props;
+  const { user, setIsModalOpen, isModalOpen, setUser } = props;
   const onFinish = async (values: User) => {
-    const res = await http(`users/${user?.id}`, {
+    const res = await fetch(`${LoginUrl}/users/${user?.id}`, {
       method: "PUT",
-      data: { ...user, ...values },
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...user, ...values }),
     });
-    console.log(res);
+    setUser({ ...user, ...values });
     setIsModalOpen(false);
     message.success("修改成功");
   };
@@ -80,7 +84,3 @@ export const UserEditModal = (props: Iprops) => {
     </>
   );
 };
-const ModalButton = styled.div`
-  display: flex;
-  justify-content: end;
-`;

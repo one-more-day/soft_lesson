@@ -1,5 +1,5 @@
 import { ProjectAddModal } from "@/components/modal/projectAddModal";
-import { ProjectApplyModal } from "@/components/modal/projectApplyModal";
+import { ProjectType } from "@/types";
 import { useMount } from "@/utils";
 import { useHttp } from "@/utils/http";
 import { useAsync } from "@/utils/useAsync";
@@ -14,48 +14,52 @@ import { Button, Dropdown, message, Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 
-export interface ProjectType {
-  id: string;
-  name: string;
-  intro: number;
-  endtime: string;
-  process: number;
-  attachment: string;
-}
-
 export const SciPublishTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const http = useHttp();
   const { data: applyList, run, isLoading, retry } = useAsync<ProjectType[]>();
   useMount(() => {
-    run(http("projects"), { retry: () => http("projects") });
+    run(http("demo/sciInfo/getAllSciInfo"), {
+      retry: () => http("demo/sciInfo/getAllSciInfo"),
+    });
     console.log(applyList);
   });
   const onDelete = (e: any, info: ProjectType) => {
-    http(`projects/${info.id}`, { method: "DELETE" }).then(() => retry());
+    console.log(info);
+
+    http(`demo/sciInfo/rmSciInfo`, {
+      method: "POST",
+      data: {
+        sciNo: info.sciNo,
+      },
+    }).then((res) => {
+      console.log(res);
+      message.success("删除成功");
+      retry();
+    });
   };
   const columns: ColumnsType<ProjectType> = [
     {
       title: "项目名称",
-      dataIndex: "name",
+      dataIndex: "projectname",
       key: "name",
       render: (text) => <a>{text}</a>,
       width: 300,
     },
     {
       title: "项目简介",
-      dataIndex: "intro",
+      dataIndex: "id",
       key: "intro",
       width: 200,
     },
     {
       title: "截至时间",
-      dataIndex: "endtime",
+      dataIndex: "deadline",
       width: 200,
     },
     {
       title: "附件",
-      dataIndex: "attachment",
+      dataIndex: "attach",
       render: (text) => (
         <AttachLink href={text}>
           <LinkOutlined />
@@ -81,7 +85,9 @@ export const SciPublishTable = () => {
           </Button>
         )}
         columns={columns}
-        dataSource={applyList?.map((item) => ({ ...item, key: item.id })) || []}
+        dataSource={
+          applyList?.map((item) => ({ ...item, key: item.sciNo })) || []
+        }
         loading={isLoading}
       />
       <ProjectAddModal

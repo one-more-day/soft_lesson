@@ -1,5 +1,5 @@
 import { User } from "@/pages/login/login.type";
-import { apiUrl } from "@/global";
+import { apiUrl, LoginUrl } from "@/global";
 export const localStorageKey = "__auth_provider_token__";
 export const getToken = () => window.localStorage.getItem(localStorageKey);
 export const handleUserResponse = ({ user }: { user: User }) => {
@@ -7,7 +7,7 @@ export const handleUserResponse = ({ user }: { user: User }) => {
   return user;
 };
 export const login = async (data: { username: string; password: string }) => {
-  const res = await fetch(`${apiUrl}/login`, {
+  const res = await fetch(`${LoginUrl}/login`, {
     method: "post",
     headers: {
       "Content-type": "application/json",
@@ -24,7 +24,7 @@ export const register = async (data: {
   username: string;
   password: string;
 }) => {
-  const res = await fetch(`${apiUrl}/register`, {
+  const res = await fetch(`${LoginUrl}/register`, {
     method: "post",
     headers: {
       "Content-type": "application/json",

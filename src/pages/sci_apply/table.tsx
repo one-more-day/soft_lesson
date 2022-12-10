@@ -1,20 +1,22 @@
 import { ApplyProcessModal } from "@/components/modal/applyProcessModal";
+import { ApplyProjectType, ProjectType } from "@/types";
 import { useMount } from "@/utils";
 import { useHttp } from "@/utils/http";
 import { useAsync } from "@/utils/useAsync";
 import { Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
-import { ProjectType } from "../sci_info/table";
+
+
 export const SciApplyTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalInfo, setModalInfo] = useState<ProjectType | null>(null);
+  const [modalInfo, setModalInfo] = useState<ApplyProjectType | null>(null);
   const http = useHttp();
-  const columns: ColumnsType<ProjectType> = [
+  const columns: ColumnsType<ApplyProjectType> = [
     {
       title: "项目名称",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "projectname",
+      key: "projectname",
       render: (text) => <a>{text}</a>,
       width: 100,
     },
@@ -26,24 +28,29 @@ export const SciApplyTable = () => {
     },
     {
       title: "截至时间",
-      dataIndex: "endtime",
+      dataIndex: "deadline",
       width: 200,
     },
     {
       title: "进度",
-      dataIndex: "process",
-      render: (_, { process }) => (
+      render: (_, { checkStat }) => (
         <>
           {
             <Tag
               color={
-                process === 0 ? "geekblue" : process === 1 ? "blue" : "green"
+                checkStat === 0
+                  ? "geekblue"
+                  : checkStat === 1
+                  ? "blue"
+                  : "green"
               }
             >
-              {process === 0
+              {checkStat === 0
                 ? "未申请"
-                : process === 1
+                : checkStat === 1
                 ? "正在审核"
+                : checkStat === 2
+                ? "审核失败"
                 : "审核成功"}
             </Tag>
           }
@@ -53,11 +60,11 @@ export const SciApplyTable = () => {
     },
   ];
 
-  const { data: applyList, run, isLoading } = useAsync<ProjectType[]>();
+  const { data: applyList, run, isLoading } = useAsync<ApplyProjectType[]>();
   useMount(() => {
-    run(http("projects"));
+    run(http("demo/projectApply/getProjectApplyByTno", { data: { tno: 1 } }));
   });
-  const click = (e: any, info: ProjectType) => {
+  const click = (e: any, info: ApplyProjectType) => {
     setIsModalOpen(true);
     setModalInfo(info);
   };
@@ -66,9 +73,11 @@ export const SciApplyTable = () => {
       <Table
         columns={columns}
         dataSource={
-          applyList
-            ?.map((item) => ({ ...item, key: item.id }))
-            .filter((item) => item.process !== 0) || []
+          applyList?.map((item) => ({
+            ...item,
+            key: item.sciNo,
+            ...item.sciInfo,
+          })) || []
         }
         loading={isLoading}
         onRow={(record) => {

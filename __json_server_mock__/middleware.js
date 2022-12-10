@@ -1,15 +1,15 @@
 module.exports = (req, res, next) => {
   if (req.method === "POST" && req.path === "/login") {
     if (
-      req.body.username === "jack" &&
-      req.body.password === "jack" &&
+      req.body.username === "teacher" &&
+      req.body.password === "teacher" &&
       req.body.identity === "teacher"
     ) {
       return res.status(200).json({
         user: {
           id: "1",
           token: "teacher",
-          name: "jack",
+          name: "teacher",
           school: "河北工业大学",
           tele: "13456709876",
           email: "1234598769@qq.com",

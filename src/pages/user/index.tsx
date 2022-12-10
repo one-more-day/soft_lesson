@@ -9,20 +9,21 @@ import { useHttp } from "@/utils/http";
 import { User } from "../login/login.type";
 import { useMount } from "@/utils";
 import { BaseList } from "@/components/list";
-interface TeacAward {
-  id: number;
-  tno: number;
-  name: string;
-  type: number;
-}
+import { TeacAward } from "@/types";
+
 export const UserScreen = () => {
   const http = useHttp();
   const [user, setUser] = useState<User | null>(null);
-  const [teacAward, setTeacAward] = useState<TeacAward[] | null>(null);
+  const [teacAward, setTeacAward] = useState<TeacAward | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user: authUser } = useAuth();
   useMount(() => {
-    http("teacaward").then(setTeacAward);
+    http("demo/teacher/getTeacAward", {
+      method: "GET",
+      data: {
+        tno: authUser?.id,
+      },
+    }).then(setTeacAward);
     setUser(authUser);
   });
   return (
@@ -77,6 +78,7 @@ export const UserScreen = () => {
               rows={2}
               placeholder={"简单记录自己"}
               value={user?.intro}
+              disabled
             />
           </Form.Item>
           <Divider />
@@ -98,20 +100,27 @@ export const UserScreen = () => {
             width: "55rem",
           }}
           title={"个人奖项信息"}
-          headStyle={{ fontSize: 25 }}
+          headStyle={{ fontSize: 20 }}
         >
           {teacAward ? (
             <>
+              <h3>专利信息</h3>
               <BaseList
-                props={teacAward.filter((item) => item.type === 1)}
+                props={teacAward.teacPatents}
+                title={"patId"}
+                name={"attached"}
               />
-              <Divider />
+              <h3>软著信息</h3>
               <BaseList
-                props={teacAward.filter((item) => item.type === 2)}
+                props={teacAward.teacSofts}
+                title={"patId"}
+                name={"softApply"}
               />
-              <Divider />
+              <h3>论文信息</h3>
               <BaseList
-                props={teacAward.filter((item) => item.type === 3)}
+                props={teacAward.teacPapers}
+                title={"patId"}
+                name={"thesis"}
               />
             </>
           ) : null}

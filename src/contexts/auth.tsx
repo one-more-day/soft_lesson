@@ -4,6 +4,7 @@ import { useAsync } from "@/utils/useAsync";
 import { useMount } from "@/utils";
 import * as auth from "@/services/auth-provider";
 import { http } from "@/utils/http";
+import { LoginUrl } from "@/global";
 interface AuthForm {
   username: string;
   password: string;
@@ -19,7 +20,7 @@ const bootstrapUser = async () => {
   let user = null;
   const token = auth.getToken();
   if (token) {
-    const data = await http(`users`, { data: { token } });
+    const data = await (await fetch(`${LoginUrl}/users?token=${token}`)).json();
     console.log("mydata", token, data[0]);
     user = data[0];
   }
