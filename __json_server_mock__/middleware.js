@@ -26,6 +26,11 @@ module.exports = (req, res, next) => {
         user: {
           name: "sci",
           token: "sciadmin",
+          name: "sciAdmin",
+          school: "河北工业大学",
+          tele: "13456709876",
+          email: "1234598769@qq.com",
+          academy: "土木工程",
           auth: 2,
         },
       });
@@ -38,6 +43,11 @@ module.exports = (req, res, next) => {
         user: {
           name: "admin",
           token: "admin",
+          name: "admin",
+          school: "河北工业大学",
+          tele: "13456709876",
+          email: "1234598769@qq.com",
+          academy: "土木工程",
           auth: 3,
         },
       });

@@ -11,4 +11,9 @@ export interface User {
   intro?: string;
   username?: string;
   password?: string;
+  gender?: number;
+  telephone?: string;
+  realname?: string;
+  tno?: string;
+  sno?: string;
 }

@@ -12,7 +12,7 @@ export const Paper = () => {
   const { user } = useAuth();
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<RcFile[]>([]);
-  const onFinish = (values: { title: string; patId: string }) => {
+  const onFinish = (values: { name: string }) => {
     if (fileList.length === 0) {
       message.info("请上传附件");
       return;
@@ -20,8 +20,8 @@ export const Paper = () => {
     const fd = new FormData();
     fd.append("thesis", fileList[0]);
     fd.append("tno", String(user?.id));
-    fd.append("subject", values.title);
-    fd.append("patId", values.patId);
+    fd.append("subject", values.name);
+    fd.append("name", values.name);
     fileHttp("demo/teacPaper/submitPaper", {
       body: fd,
     }).then(() => {
@@ -43,10 +43,7 @@ export const Paper = () => {
           onFinish={onFinish}
           form={form}
         >
-          <Form.Item label="论文题目" name="title">
-            <Input />
-          </Form.Item>
-          <Form.Item label="论文编号" name="patId">
+          <Form.Item label="论文题目" name="name">
             <Input />
           </Form.Item>
           <Form.Item label="论文简介" name={"subject"}>

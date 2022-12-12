@@ -15,7 +15,7 @@ export const Patent = () => {
   const onFinish = (values: {
     idNumber: string;
     postcode: string;
-    patId: string;
+    name: string;
     allpeople: string;
     address: string;
   }) => {
@@ -31,7 +31,7 @@ export const Patent = () => {
     fd.append("idNumber", values.idNumber);
     fd.append("address", values.address);
     fd.append("allPeople", values.allpeople);
-    fd.append("patId", values.patId);
+    fd.append("name", values.name);
     fd.append("postcode", values.postcode);
     fileHttp("demo/teacPatent/submitPatent", {
       body: fd,
@@ -64,9 +64,6 @@ export const Patent = () => {
             <Input />
           </Form.Item>
           <Form.Item label="邮政编码" name={"postcode"}>
-            <Input />
-          </Form.Item>
-          <Form.Item label="专利编号" name={"patId"}>
             <Input />
           </Form.Item>
           <Form.Item label="通讯地址" name={"address"}>

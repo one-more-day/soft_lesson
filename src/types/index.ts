@@ -29,6 +29,7 @@ export interface TeacPatent {
   idNumber: string;
   allPeople: string;
   attached: string;
+  name: string;
 }
 export interface TeacSoft {
   patId: number;
@@ -37,10 +38,12 @@ export interface TeacSoft {
   softApply: string;
   softMaterial: string;
   idAuth: string;
+  name: string;
 }
 export interface TeacPaper {
   patId: number;
   tno: number;
   subject: string;
   thesis: string;
+  name: string;
 }

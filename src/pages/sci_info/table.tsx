@@ -8,14 +8,12 @@ import { LinkOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import { Button, Dropdown, message, Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useEffect, useState } from "react";
-import useDeepCompareEffect from "use-deep-compare-effect";
+import { useState } from "react";
 
 export const SciInfoTable = () => {
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState<ProjectType | null>(null);
-  const [applyArr, setApplyArr] = useState<number[]>([]);
   const http = useHttp();
   const {
     data: applyList,

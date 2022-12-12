@@ -37,13 +37,15 @@ export const SciApplyTable = () => {
         <>
           {
             <Tag
-              color={
-                checkStat === 0
-                  ? "geekblue"
-                  : checkStat === 1
-                  ? "blue"
-                  : "green"
-              }
+            color={
+              checkStat === 0
+                ? "geekblue"
+                : checkStat === 1
+                ? "blue"
+                : checkStat === 2
+                ? "red"
+                : "green"
+            }
             >
               {checkStat === 0
                 ? "未申请"

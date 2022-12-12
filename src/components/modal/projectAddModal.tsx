@@ -25,17 +25,17 @@ export const ProjectAddModal = (props: Iprops) => {
     }
     const fd = new FormData();
     fd.append("procjectName", values.projectname);
-    fd.append("sciNo", values.sciNo.toString());
     fd.append("deadLine", values.deadline);
     fd.append("attach", fileList[0]);
-    fd.append("publishTime", getNowTime("HH-MM-DD"));
+    fd.append("publishTime", getNowTime("YYYY-MM-DD"));
     fd.append("publisher", user ? user.name : "");
 
     console.log(values, FileUrl);
     fileHttp("demo/sciInfo/addSciInfo", {
       body: fd,
-    }).then(() => {
-      message.success("添加成功");
+    }).then(async (res) => {
+      const text = await res.text();
+      message.info(text);
       retry();
     });
     setIsModalOpen(false);
@@ -57,17 +57,14 @@ export const ProjectAddModal = (props: Iprops) => {
           onFinish={onFinish}
         >
           <Form.Item
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "项目名称不能为空" }]}
             name="projectname"
             label="项目名称"
           >
             <Input />
           </Form.Item>
-          <Form.Item rules={[{ required: true }]} name="sciNo" label="项目编号">
-            <Input />
-          </Form.Item>
           <Form.Item
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "截止时间不能为空" }]}
             name="deadline"
             label="截止时间"
           >

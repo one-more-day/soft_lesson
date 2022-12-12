@@ -16,7 +16,7 @@ export const TUploadFile = ({
     const isDoc =
       file.name.split(".")[1] === "doc" || file.name.split(".")[1] === "docx";
     if (!isDoc) {
-      message.error("You can only upload doc file!");
+      message.error("您只能上传word文档!");
     }
     setFileList((pre) => [...pre, file]);
     return false;

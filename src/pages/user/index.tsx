@@ -2,28 +2,19 @@ import { Avatar, Button, Card, Divider, Form, Layout, List } from "antd";
 import avatar from "@/assets/avatar.jpg";
 import { useAuth } from "@/contexts/auth";
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { UserEditModal } from "@/components/modal/userEditModal";
 import TextArea from "antd/lib/input/TextArea";
 import { useHttp } from "@/utils/http";
 import { User } from "../login/login.type";
 import { useMount } from "@/utils";
-import { BaseList } from "@/components/list";
-import { TeacAward } from "@/types";
 
 export const UserScreen = () => {
   const http = useHttp();
   const [user, setUser] = useState<User | null>(null);
-  const [teacAward, setTeacAward] = useState<TeacAward | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user: authUser } = useAuth();
   useMount(() => {
-    http("demo/teacher/getTeacAward", {
-      method: "GET",
-      data: {
-        tno: authUser?.id,
-      },
-    }).then(setTeacAward);
     setUser(authUser);
   });
   return (
@@ -31,7 +22,7 @@ export const UserScreen = () => {
       <Card
         style={{
           marginLeft: "1rem",
-          width: user?.auth === 1 ? "55rem" : "80rem",
+          width: "80rem",
         }}
         title={"基本信息"}
         headStyle={{ fontSize: 25 }}
@@ -93,39 +84,6 @@ export const UserScreen = () => {
           />
         </CardCon>
       </Card>
-      {user?.auth === 1 ? (
-        <Card
-          style={{
-            marginLeft: "1rem",
-            width: "55rem",
-          }}
-          title={"个人奖项信息"}
-          headStyle={{ fontSize: 20 }}
-        >
-          {teacAward ? (
-            <>
-              <h3>专利信息</h3>
-              <BaseList
-                props={teacAward.teacPatents}
-                title={"patId"}
-                name={"attached"}
-              />
-              <h3>软著信息</h3>
-              <BaseList
-                props={teacAward.teacSofts}
-                title={"patId"}
-                name={"softApply"}
-              />
-              <h3>论文信息</h3>
-              <BaseList
-                props={teacAward.teacPapers}
-                title={"patId"}
-                name={"thesis"}
-              />
-            </>
-          ) : null}
-        </Card>
-      ) : null}
     </OuterContainer>
   );
 };

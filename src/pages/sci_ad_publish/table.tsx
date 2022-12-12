@@ -1,18 +1,15 @@
 import { ProjectAddModal } from "@/components/modal/projectAddModal";
+import { More } from "@/components/More";
 import { ProjectType } from "@/types";
 import { useMount } from "@/utils";
 import { useHttp } from "@/utils/http";
 import { useAsync } from "@/utils/useAsync";
-import {
-  DownOutlined,
-  LinkOutlined,
-  PlusSquareOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { LinkOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
-import { Button, Dropdown, message, Space, Table, Tag } from "antd";
+import { Button, message, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
+import { User } from "../login/login.type";
 
 export const SciPublishTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,13 +21,13 @@ export const SciPublishTable = () => {
     });
     console.log(applyList);
   });
-  const onDelete = (e: any, info: ProjectType) => {
+  const onDelete = (e: any, info: ProjectType | User) => {
     console.log(info);
 
     http(`demo/sciInfo/rmSciInfo`, {
       method: "POST",
       data: {
-        sciNo: info.sciNo,
+        sciNo: (info as ProjectType).sciNo,
       },
     }).then((res) => {
       console.log(res);
@@ -101,32 +98,3 @@ export const SciPublishTable = () => {
 const AttachLink = styled.a`
   font-size: 1.3rem;
 `;
-const More = ({
-  project,
-  onDelete,
-}: {
-  project: ProjectType;
-  onDelete: (e: any, project: ProjectType) => void;
-}) => {
-  const items = [
-    {
-      label: (
-        <Button
-          style={{ fontSize: "1.4rem" }}
-          type="link"
-          onClick={(e) => onDelete(e, project)}
-        >
-          删除
-        </Button>
-      ),
-      key: "1",
-    },
-  ];
-  return (
-    <Dropdown menu={{ items }}>
-      <Button type="text">
-        <Space>...</Space>
-      </Button>
-    </Dropdown>
-  );
-};

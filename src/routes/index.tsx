@@ -10,6 +10,7 @@ import { RouteObject, useRoutes } from "react-router-dom";
 import {
   DesktopOutlined,
   FileOutlined,
+  IdcardOutlined,
   PieChartOutlined,
   TeamOutlined,
   UserOutlined,
@@ -20,6 +21,7 @@ import { SciPublish } from "@/pages/sci_ad_publish";
 import { AdminTeac } from "@/pages/admin_teac";
 import { AdminSci } from "@/pages/admin_sci";
 import { SciExam } from "@/pages/sci_ad_exam";
+import { SciAward } from "@/pages/sci_award";
 export type RouterAuth = RouteObject & {
   name: string;
   icon?: React.ReactNode;
@@ -43,6 +45,7 @@ const teacher = [
     auth: 1,
     icon: <FileOutlined />,
   },
+
   {
     path: "/sci",
     name: "个人科研上传",
@@ -76,6 +79,13 @@ const teacher = [
     component: <UserScreen />,
     auth: 1,
     icon: <UserOutlined />,
+  },
+  {
+    path: "/sciaward",
+    name: "个人奖项信息",
+    component: <SciAward />,
+    auth: 1,
+    icon: <IdcardOutlined />,
   },
 ];
 const sciManager = [

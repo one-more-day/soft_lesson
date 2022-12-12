@@ -16,7 +16,7 @@ export const Soft = () => {
   const onFinish = (values: {
     idNumber: string;
     postcode: string;
-    patId: string;
+    name: string;
     allpeople: string;
     address: string;
   }) => {
@@ -33,7 +33,7 @@ export const Soft = () => {
     fd.append("idAuth", fileList3[0]);
     fd.append("tno", String(user?.id));
     fd.append("idNumber", values.idNumber);
-    fd.append("patId", values.patId);
+    fd.append("name", values.name);
     fileHttp("demo/teacSoft/submitSoft", {
       body: fd,
     }).then(() => {
@@ -54,7 +54,7 @@ export const Soft = () => {
           layout="horizontal"
           onFinish={onFinish}
         >
-          <Form.Item label="软著编号" name={"patId"}>
+          <Form.Item label="软著名称" name={"name"}>
             <Input />
           </Form.Item>
           <Form.Item label="身份证号" name={"idNumber"}>
