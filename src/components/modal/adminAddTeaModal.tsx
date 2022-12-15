@@ -38,7 +38,11 @@ export const AdminAddTeacherModal = (props: Iprops) => {
           onFinish={onFinish}
           initialValues={{}}
         >
-          <Form.Item name="realname" label="真实姓名">
+          <Form.Item
+            name="realname"
+            label="真实姓名"
+            rules={[{ required: true, message: "真实姓名不能为空" }]}
+          >
             <Input />
           </Form.Item>
           <Form.Item name="gender" label="性别">
@@ -56,13 +60,33 @@ export const AdminAddTeacherModal = (props: Iprops) => {
               <Select.Option value="马克思主义">马克思主义</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name="username" label="用户名">
+          <Form.Item
+            name="username"
+            label="用户名"
+            rules={[{ required: true, message: "用户名不能为空" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="password" label="密码">
+          <Form.Item
+            name="password"
+            label="密码"
+            rules={[{ required: true, message: "密码不能为空" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="telephone" label="联系电话">
+          <Form.Item
+            name="telephone"
+            label="联系电话"
+            rules={[
+              {
+                required: false,
+                pattern: new RegExp(
+                  /^1(3\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\d|9[0-35-9])\d{8}$/
+                ),
+                message: "请输入正确的手机号",
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
           <Divider />
