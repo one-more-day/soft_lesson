@@ -1,4 +1,5 @@
 import { ApplyProcessModal } from "@/components/modal/applyProcessModal";
+import { useAuth } from "@/contexts/auth";
 import { ApplyProjectType, ProjectType } from "@/types";
 import { useMount } from "@/utils";
 import { useHttp } from "@/utils/http";
@@ -7,11 +8,11 @@ import { Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 
-
 export const SciApplyTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState<ApplyProjectType | null>(null);
   const http = useHttp();
+  const { user } = useAuth();
   const columns: ColumnsType<ApplyProjectType> = [
     {
       title: "项目名称",
@@ -37,15 +38,15 @@ export const SciApplyTable = () => {
         <>
           {
             <Tag
-            color={
-              checkStat === 0
-                ? "geekblue"
-                : checkStat === 1
-                ? "blue"
-                : checkStat === 2
-                ? "red"
-                : "green"
-            }
+              color={
+                checkStat === 0
+                  ? "geekblue"
+                  : checkStat === 1
+                  ? "blue"
+                  : checkStat === 2
+                  ? "red"
+                  : "green"
+              }
             >
               {checkStat === 0
                 ? "未申请"
@@ -64,7 +65,11 @@ export const SciApplyTable = () => {
 
   const { data: applyList, run, isLoading } = useAsync<ApplyProjectType[]>();
   useMount(() => {
-    run(http("demo/projectApply/getProjectApplyByTno", { data: { tno: 1 } }));
+    run(
+      http("demo/projectApply/getProjectApplyByTno", {
+        data: { tno: user?.tno },
+      })
+    );
   });
   const click = (e: any, info: ApplyProjectType) => {
     setIsModalOpen(true);

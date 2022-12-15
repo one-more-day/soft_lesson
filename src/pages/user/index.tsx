@@ -34,7 +34,7 @@ export const UserScreen = () => {
           <Container>
             <IntroCon>
               <IntroSpan>姓名:</IntroSpan>
-              <span>{user?.name}</span>
+              <span>{user?.username}</span>
             </IntroCon>
             <IntroCon>
               <IntroSpan>职业:</IntroSpan>
@@ -47,20 +47,16 @@ export const UserScreen = () => {
               </span>
             </IntroCon>
             <IntroCon>
-              <IntroSpan>学校:</IntroSpan>
-              <span>{user?.school}</span>
-            </IntroCon>
-            <IntroCon>
               <IntroSpan>学院:</IntroSpan>
               <span>{user?.academy}</span>
             </IntroCon>
             <IntroCon>
               <IntroSpan>邮箱:</IntroSpan>
-              <span>{user?.email}</span>
+              <span>{user?.email ? user?.email : "2728103295@qq.com"}</span>
             </IntroCon>
             <IntroCon>
               <IntroSpan>联系电话:</IntroSpan>
-              <span>{user?.tele}</span>
+              <span>{user?.telephone}</span>
             </IntroCon>
           </Container>
           <Divider />

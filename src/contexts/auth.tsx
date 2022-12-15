@@ -8,6 +8,7 @@ import { LoginUrl } from "@/global";
 interface AuthForm {
   username: string;
   password: string;
+  identity: number;
 }
 interface AuthContextType {
   user: User | null;
@@ -19,10 +20,11 @@ const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 const bootstrapUser = async () => {
   let user = null;
   const token = auth.getToken();
+
   if (token) {
-    const data = await (await fetch(`${LoginUrl}/users?token=${token}`)).json();
-    console.log("mydata", token, data[0]);
-    user = data[0];
+    // const data = await (await fetch(`${LoginUrl}/users?token=${token}`)).json();
+    // console.log("mydata", token, data[0]);
+    user = JSON.parse(token);
   }
   return user;
 };
@@ -36,7 +38,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isError,
     error,
   } = useAsync<User | null>();
-  const login = (form: AuthForm) => auth.login(form).then(setUser);
+  const login = (form: AuthForm) =>
+    auth.login(form).then((res) => {
+      setUser(res);
+    });
   const register = (form: AuthForm) => auth.register(form).then(setUser);
   const logout = () => auth.logout().then(() => setUser(null));
   useMount(() => {

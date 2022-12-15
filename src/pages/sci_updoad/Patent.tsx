@@ -1,10 +1,8 @@
 import { TUploadFile } from "@/components/upload/TUploadFile";
 import { useAuth } from "@/contexts/auth";
 import { fileHttp } from "@/utils/http";
-import styled from "@emotion/styled";
 import { Button, Card, Form, Input, message } from "antd";
 import { RcFile } from "antd/es/upload/interface";
-import TextArea from "antd/lib/input/TextArea";
 import { useState } from "react";
 import { CardCon } from ".";
 
@@ -27,7 +25,7 @@ export const Patent = () => {
     }
     const fd = new FormData();
     fd.append("attached", fileList[0]);
-    fd.append("tno", String(user?.id));
+    fd.append("tno", String(user?.tno));
     fd.append("idNumber", values.idNumber);
     fd.append("address", values.address);
     fd.append("allPeople", values.allpeople);
@@ -45,6 +43,7 @@ export const Patent = () => {
         idNumber: "",
       });
       message.success("上传成功");
+      setFileList([]);
     });
   };
   return (
@@ -57,23 +56,53 @@ export const Patent = () => {
           layout="horizontal"
           onFinish={onFinish}
         >
-          <Form.Item label="专利名称" name={"name"}>
+          <Form.Item
+            label="专利名称"
+            name={"name"}
+            rules={[{ required: true, message: "专利名称不能为空" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="身份证号" name={"idNumber"}>
+          <Form.Item
+            label="身份证号"
+            name={"idNumber"}
+            rules={[
+              { required: true, message: "身份证号不能为空" },
+              {
+                required: false,
+                pattern: new RegExp(
+                  /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/,
+                  "g"
+                ),
+                message: "请输入正确的身份证",
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="邮政编码" name={"postcode"}>
+          <Form.Item
+            label="邮政编码"
+            name={"postcode"}
+            rules={[{ required: true, message: "邮政编码不能为空" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="通讯地址" name={"address"}>
+          <Form.Item
+            label="通讯地址"
+            name={"address"}
+            rules={[{ required: true, message: "通讯地址不能为空" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="发明人" name={"allpeople"}>
+          <Form.Item
+            label="发明人"
+            name={"allpeople"}
+            rules={[{ required: true, message: "发明人不能为空" }]}
+          >
             <Input />
           </Form.Item>
           <Form.Item label="附件上传">
-            <TUploadFile setFileList={setFileList} />
+            <TUploadFile FileList={fileList} setFileList={setFileList} />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">

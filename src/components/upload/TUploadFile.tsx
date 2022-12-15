@@ -1,13 +1,19 @@
-import { CheckSquareOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CheckSquareOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import { Button, message, Upload } from "antd";
 import type { RcFile } from "antd/es/upload/interface";
 import { useState } from "react";
 
 export const TUploadFile = ({
+  FileList,
   FileUrl,
   setFileUrl,
   setFileList,
 }: {
+  FileList?: RcFile[];
   FileUrl?: string;
   setFileUrl?: (url: string) => void;
   setFileList: (file: (pre: RcFile[]) => RcFile[]) => void;
@@ -28,15 +34,21 @@ export const TUploadFile = ({
       showUploadList={false}
       beforeUpload={beforeUpload}
     >
-      {FileUrl ? (
-        <img src={FileUrl} alt="avatar" style={{ width: "100%" }} />
-      ) : (
+      <div style={{ display: "flex" }}>
         <Button
           icon={<UploadOutlined style={{ color: "blue", fontSize: 20 }} />}
         >
           上传附件
         </Button>
-      )}
+        {FileList?.length !== 0 ? (
+          <>
+            <div style={{ marginTop: 5, marginLeft: 5 }}>
+              <CheckSquareOutlined style={{ color: "green", fontSize: 25 }} />
+            </div>
+            <span style={{ marginTop: 5, color: "green" }}>上传成功！</span>
+          </>
+        ) : null}
+      </div>
     </Upload>
   );
 };

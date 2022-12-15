@@ -16,4 +16,5 @@ export interface User {
   realname?: string;
   tno?: string;
   sno?: string;
+  ano?: string;
 }

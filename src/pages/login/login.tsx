@@ -13,7 +13,7 @@ export const LoginSreen = () => {
   const handleSubmit = (values: {
     username: string;
     password: string;
-    identity: string;
+    identity: number;
   }) => {
     console.log(values);
 
@@ -61,15 +61,15 @@ export const LoginSreen = () => {
             { label: "请选择", value: "" },
             {
               label: "教师",
-              value: "teacher",
+              value: 3,
             },
             {
               label: "科研管理员",
-              value: "sciAdmin",
+              value: 2,
             },
             {
               label: "管理员",
-              value: "admin",
+              value: 1,
             },
           ]}
         />

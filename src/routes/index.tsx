@@ -8,6 +8,7 @@ import { generateRouter, routerFliter } from "@/utils/route";
 import React from "react";
 import { RouteObject, useRoutes } from "react-router-dom";
 import {
+  BarChartOutlined,
   DesktopOutlined,
   FileOutlined,
   IdcardOutlined,
@@ -22,6 +23,8 @@ import { AdminTeac } from "@/pages/admin_teac";
 import { AdminSci } from "@/pages/admin_sci";
 import { SciExam } from "@/pages/sci_ad_exam";
 import { SciAward } from "@/pages/sci_award";
+import { SciInfoExam } from "@/pages/sci_ad_sciexam";
+import { SciChart } from "@/pages/sci_ad_math";
 export type RouterAuth = RouteObject & {
   name: string;
   icon?: React.ReactNode;
@@ -103,6 +106,20 @@ const sciManager = [
     component: <SciExam />,
     auth: 2,
     icon: <FileOutlined />,
+  },
+  {
+    path: "/sciawardexam",
+    name: "科研信息审批",
+    component: <SciInfoExam />,
+    auth: 2,
+    icon: <FileOutlined />,
+  },
+  {
+    path: "/scimath",
+    name: "统计信息",
+    component: <SciChart />,
+    auth: 2,
+    icon: <BarChartOutlined />,
   },
   {
     path: "/user",

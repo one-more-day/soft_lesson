@@ -14,13 +14,13 @@ interface Iprops {
 export const UserEditModal = (props: Iprops) => {
   const { user, setIsModalOpen, isModalOpen, setUser } = props;
   const onFinish = async (values: User) => {
-    const res = await fetch(`${LoginUrl}/users/${user?.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...user, ...values }),
-    });
+    // const res = await fetch(`${LoginUrl}/users/${user?.id}`, {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ ...user, ...values }),
+    // });
     setUser({ ...user, ...values });
     setIsModalOpen(false);
     message.success("修改成功");
@@ -40,9 +40,18 @@ export const UserEditModal = (props: Iprops) => {
           wrapperCol={{ span: 14 }}
           layout="horizontal"
           onFinish={onFinish}
-          initialValues={{ ...user }}
+          initialValues={{ ...user, email: "2728103295@qq.com" }}
         >
-          <Form.Item name="name" label="姓名">
+          <Form.Item
+            name="username"
+            label="姓名"
+            rules={[
+              {
+                required: true,
+                message: "姓名不能为空",
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
           <Form.Item name="academy" label="学院">
@@ -57,7 +66,19 @@ export const UserEditModal = (props: Iprops) => {
           <Form.Item name="email" label="邮箱">
             <Input />
           </Form.Item>
-          <Form.Item name="tele" label="联系电话">
+          <Form.Item
+            name="telephone"
+            label="联系电话"
+            rules={[
+              {
+                required: false,
+                pattern: new RegExp(
+                  /^1(3\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\d|9[0-35-9])\d{8}$/
+                ),
+                message: "请输入正确的手机号",
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
           <Form.Item name="intro" label="个人简介">

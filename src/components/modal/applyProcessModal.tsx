@@ -17,7 +17,7 @@ export const ApplyProcessModal = (props: Iprops) => {
   const generator = (project: ApplyProjectType) => {
     const arr = [];
     arr.push({ title: "项目名称", name: project.sciInfo.projectname });
-    arr.push({ title: "项目申请人", name: user?.name || "jack" });
+    arr.push({ title: "项目申请人", name: user?.username || "jack" });
     arr.push({
       title: "项目附件",
       name: <a href={project.sciInfo.attach}>{project.sciInfo.attach}</a>,

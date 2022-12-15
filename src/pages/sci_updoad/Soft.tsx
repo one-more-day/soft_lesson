@@ -31,17 +31,20 @@ export const Soft = () => {
     fd.append("softApply", fileList1[0]);
     fd.append("softMaterial", fileList2[0]);
     fd.append("idAuth", fileList3[0]);
-    fd.append("tno", String(user?.id));
+    fd.append("tno", String(user?.tno));
     fd.append("idNumber", values.idNumber);
     fd.append("name", values.name);
     fileHttp("demo/teacSoft/submitSoft", {
       body: fd,
     }).then(() => {
       form.setFieldsValue({
-        patId: "",
+        name: "",
         idNumber: "",
       });
       message.success("上传成功");
+      setFileList1([]);
+      setFileList2([]);
+      setFileList3([]);
     });
   };
   return (
@@ -54,20 +57,38 @@ export const Soft = () => {
           layout="horizontal"
           onFinish={onFinish}
         >
-          <Form.Item label="软著名称" name={"name"}>
+          <Form.Item
+            label="软著名称"
+            name={"name"}
+            rules={[{ required: true, message: "软著名称不能为空" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="身份证号" name={"idNumber"}>
+          <Form.Item
+            label="身份证号"
+            name={"idNumber"}
+            rules={[
+              { required: true, message: "身份证号不能为空" },
+              {
+                required: false,
+                pattern: new RegExp(
+                  /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/,
+                  "g"
+                ),
+                message: "请输入正确的身份证",
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
           <Form.Item label="软件申请表">
-            <TUploadFile setFileList={setFileList1} />
+            <TUploadFile FileList={fileList1} setFileList={setFileList1} />
           </Form.Item>
           <Form.Item label="软件材料">
-            <TUploadFile setFileList={setFileList2} />
+            <TUploadFile FileList={fileList2} setFileList={setFileList2} />
           </Form.Item>
           <Form.Item label="联系人证明文件">
-            <TUploadFile setFileList={setFileList3} />
+            <TUploadFile FileList={fileList3} setFileList={setFileList3} />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">

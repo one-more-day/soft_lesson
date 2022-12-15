@@ -15,6 +15,7 @@ export interface ApplyProjectType {
   checkStat: number;
   sciInfo: ProjectType;
   intro: string;
+  attach: string;
 }
 export interface TeacAward {
   teacPatents: TeacPatent[];
@@ -30,6 +31,7 @@ export interface TeacPatent {
   allPeople: string;
   attached: string;
   name: string;
+  checkStat: number;
 }
 export interface TeacSoft {
   patId: number;
@@ -39,6 +41,7 @@ export interface TeacSoft {
   softMaterial: string;
   idAuth: string;
   name: string;
+  checkStat: number;
 }
 export interface TeacPaper {
   patId: number;
@@ -46,4 +49,5 @@ export interface TeacPaper {
   subject: string;
   thesis: string;
   name: string;
+  checkStat: number;
 }

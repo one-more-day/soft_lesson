@@ -27,13 +27,14 @@ export const ProjectApplyModal = (props: Iprops) => {
     const fd = new FormData();
     fd.append("attach", fileList[0]);
     fd.append("sciNo", project ? project.sciNo.toString() : "");
-    fd.append("tno", user ? user.id.toString() : "");
+    fd.append("tno", user ? user.tno!.toString() : "");
     fileHttp(`demo/projectApply/teacApply`, {
       body: fd,
     }).then((res) => {
       console.log(res);
       retry();
       message.success("申请成功");
+      setFileList([]);
     });
   };
 
@@ -56,10 +57,10 @@ export const ProjectApplyModal = (props: Iprops) => {
             <span>{project?.projectname}</span>
           </Form.Item>
           <Form.Item name="people" label="项目申请人">
-            <span>{user?.name}</span>
+            <span>{user?.username}</span>
           </Form.Item>
           <Form.Item name="file" label="文件上传">
-            <TUploadFile setFileList={setFileList} />
+            <TUploadFile FileList={fileList} setFileList={setFileList} />
           </Form.Item>
           <Divider />
           <ModalButton>

@@ -40,7 +40,7 @@ export const PageHeader = () => {
               size={"default"}
               icon={<img src={avatar} />}
             />
-            <span>{user?.name}</span>
+            <span>{user?.username}</span>
           </AvatarCon>
         </Dropdown>
       </HeaderRight>

@@ -23,7 +23,7 @@ export const SciInfoTable = () => {
   } = useAsync<ProjectType[]>();
   const fun = async () => {
     const applyTno = await http("demo/projectApply/getProjectApplyByTno", {
-      data: { tno: 1 },
+      data: { tno: user?.tno },
     });
     const arr: number[] = [];
     applyTno.map((item: ApplyProjectType) => {

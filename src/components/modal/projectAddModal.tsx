@@ -39,6 +39,7 @@ export const ProjectAddModal = (props: Iprops) => {
       retry();
     });
     setIsModalOpen(false);
+    setFileList([]);
   };
 
   return (
@@ -71,11 +72,7 @@ export const ProjectAddModal = (props: Iprops) => {
             <Input />
           </Form.Item>
           <Form.Item rules={[{ required: false }]} label="附件上传">
-            <TUploadFile
-              FileUrl={FileUrl}
-              setFileUrl={setFileUrl}
-              setFileList={setFileList}
-            />
+            <TUploadFile FileList={fileList} setFileList={setFileList} />
           </Form.Item>
           <Divider />
           <Form.Item>

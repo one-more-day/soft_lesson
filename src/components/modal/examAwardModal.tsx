@@ -1,27 +1,23 @@
-import { User } from "@/pages/login/login.type";
-import { ExamDataType } from "@/pages/sci_ad_exam/table";
-import { ApplyProjectType } from "@/types";
+import { AwardDataType } from "@/pages/sci_ad_sciexam/table";
 import { useHttp } from "@/utils/http";
-import { Button, Modal, Steps, Divider, StepsProps, Form, Input } from "antd";
+import { Modal, Steps, Divider, StepsProps, Form, Input } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useEffect, useState } from "react";
 import { MoButton, ModalButton } from "../lib";
 import { BaseList } from "../list";
 interface Iprops {
   retry: () => void;
-  applyUser?: Map<number, User>;
   isModalOpen: boolean;
   setIsModalOpen: (p: boolean) => void;
-  project: ExamDataType | null;
-  setProject: (project: ExamDataType) => void;
+  project: AwardDataType | null;
+  setProject: (project: AwardDataType) => void;
 }
 
-export const ExamProcessModal = (props: Iprops) => {
-  const { applyUser, project, setIsModalOpen, isModalOpen, setProject, retry } =
-    props;
-  const generator = (project: ExamDataType) => {
+export const ExamAwardModal = (props: Iprops) => {
+  const { project, setIsModalOpen, isModalOpen, retry } = props;
+  const generator = (project: AwardDataType) => {
     const arr = [];
-    arr.push({ title: "项目名称", name: project.projectname });
+    arr.push({ title: "项目名称", name: project.name });
     arr.push({
       title: "项目申请人",
       name: project.teacher,
@@ -36,6 +32,12 @@ export const ExamProcessModal = (props: Iprops) => {
   const [current, setCurrent] = useState(0);
   const [status, setStatus] = useState<StepsProps["status"]>("process");
   const http = useHttp();
+  const updateStatUrl = [
+    "",
+    "demo/teacPatent/upPatentState",
+    "demo/teacSoft/upSoftState",
+    "demo/teacPaper/upPaperState",
+  ];
   useEffect(() => {
     if (project?.checkStat === 2) {
       setCurrent(1);
@@ -69,10 +71,10 @@ export const ExamProcessModal = (props: Iprops) => {
           <MoButton
             type="primary"
             onClick={() => {
-              http("demo/projectApply/upState", {
+              http(updateStatUrl[project?.type!], {
                 method: "POST",
                 data: {
-                  sciNo: project?.sciNo,
+                  patId: project?.patId,
                   tno: project?.tno,
                   checkStat: 3,
                 },
@@ -85,10 +87,10 @@ export const ExamProcessModal = (props: Iprops) => {
           </MoButton>
           <MoButton
             onClick={() => {
-              http("demo/projectApply/upState", {
+              http(updateStatUrl[project?.type!], {
                 method: "POST",
                 data: {
-                  sciNo: project?.sciNo,
+                  patId: project?.patId,
                   tno: project?.tno,
                   checkStat: 2,
                 },
@@ -102,10 +104,10 @@ export const ExamProcessModal = (props: Iprops) => {
           </MoButton>
           <MoButton
             onClick={() => {
-              http("demo/projectApply/upState", {
+              http(updateStatUrl[project?.type!], {
                 method: "POST",
                 data: {
-                  sciNo: project?.sciNo,
+                  patId: project?.patId,
                   tno: project?.tno,
                   checkStat: 1,
                 },

@@ -10,16 +10,19 @@ import { fileHttp } from "@/utils/http";
 
 export const Paper = () => {
   const { user } = useAuth();
+
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<RcFile[]>([]);
   const onFinish = (values: { name: string }) => {
+    console.log(user, values);
+
     if (fileList.length === 0) {
       message.info("请上传附件");
       return;
     }
     const fd = new FormData();
     fd.append("thesis", fileList[0]);
-    fd.append("tno", String(user?.id));
+    fd.append("tno", String(user?.tno));
     fd.append("subject", values.name);
     fd.append("name", values.name);
     fileHttp("demo/teacPaper/submitPaper", {
@@ -28,9 +31,10 @@ export const Paper = () => {
       form.setFieldsValue({
         patId: "",
         subject: "",
-        title: "",
+        name: "",
       });
       message.success("上传成功");
+      setFileList([]);
     });
   };
   return (
@@ -43,17 +47,21 @@ export const Paper = () => {
           onFinish={onFinish}
           form={form}
         >
-          <Form.Item label="论文题目" name="name">
+          <Form.Item
+            label="论文题目"
+            name="name"
+            rules={[{ required: true, message: "论文题目不能为空" }]}
+          >
             <Input />
           </Form.Item>
           <Form.Item label="论文简介" name={"subject"}>
             <TextArea rows={2} placeholder={"简介"} />
           </Form.Item>
           <Form.Item label="申请人" name={"tno"}>
-            <Input defaultValue={user?.name} disabled />
+            <Input defaultValue={user?.username} disabled />
           </Form.Item>
           <Form.Item label="附件上传">
-            <TUploadFile setFileList={setFileList} />
+            <TUploadFile FileList={fileList} setFileList={setFileList} />
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
