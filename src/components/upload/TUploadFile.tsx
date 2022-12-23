@@ -23,8 +23,9 @@ export const TUploadFile = ({
       file.name.split(".")[1] === "doc" || file.name.split(".")[1] === "docx";
     if (!isDoc) {
       message.error("您只能上传word文档!");
+      return false;
     }
-    setFileList((pre) => [...pre, file]);
+    setFileList((pre) => [file, ...pre]);
     return false;
   };
   return (
@@ -42,10 +43,23 @@ export const TUploadFile = ({
         </Button>
         {FileList?.length !== 0 ? (
           <>
-            <div style={{ marginTop: 5, marginLeft: 5 }}>
+            <div style={{ display: "flex", marginTop: 5, marginLeft: 5 }}>
               <CheckSquareOutlined style={{ color: "green", fontSize: 25 }} />
+              <div>
+                <span
+                  style={{
+                    color: "green",
+                    display: "block",
+                    width: 200,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {FileList ? FileList[0].name : ""}
+                </span>
+              </div>
             </div>
-            <span style={{ marginTop: 5, color: "green" }}>上传成功！</span>
           </>
         ) : null}
       </div>

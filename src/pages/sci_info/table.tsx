@@ -55,7 +55,7 @@ export const SciInfoTable = () => {
     } else {
       http(`demo/projectApply/rmApply`, {
         method: "POST",
-        data: { sciNo: info.sciNo, tno: Number(user?.id) },
+        data: { sciNo: info.sciNo, tno: Number(user?.tno) },
       }).then((res) => {
         fun();
       });
